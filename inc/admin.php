@@ -18,11 +18,11 @@ function bootstrap(): void {
  */
 function admin_menu() {
 	add_management_page(
-		esc_html__( 'Lifx YouTube Settings', 'lifx-youtube' ),
-		esc_html__( 'Lifx YouTube Settings', 'lifx-youtube' ),
+		esc_html__( 'LIFX + YouTube', 'lifx-youtube' ),
+		esc_html__( 'LIFX + YouTube', 'lifx-youtube' ),
 		'manage_options',
-		'youtube-settings',
-		__NAMESPACE__ . '\\register_options_page'
+		'lifx-youtube-settings',
+		__NAMESPACE__ . '\\register_options_page',
 	);
 }
 
@@ -43,7 +43,7 @@ function register_options_page(): void {
 	?>
 	<div class="wrap">
 
-		<h2 ><?php esc_html_e( 'Lifx YouTube Settings', 'lifx-youtube' ); ?></h2>
+		<h2 ><?php esc_html_e( 'LIFX + YouTube Settings', 'lifx-youtube' ); ?></h2>
 		<form method="post">
 			<input type="hidden" name="updated" value="true" />
 
@@ -156,7 +156,7 @@ function has_valid_nonce() {
  */
 function custom_display_message( string $type = 'success' ): void {
 	$classes = sprintf( 'notice notice-%s is-dismissible', $type );
-	$message = __( 'Lifx YouTube settings updated successfully.', 'lifx-youtube' );
+	$message = __( 'LIFX + YouTube settings updated successfully.', 'lifx-youtube' );
 
 	if ( $type === 'error' ) {
 		$message = __( 'An error occurred, please try again.', 'lifx-youtube' );
