@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Lifx + YouTube Plugin For WordPress
  * Plugin URI:  https://github.com/stuartshields/lifx-youtube-plugin
- * Description: Send YouTube notifications to Lifx smart lights.
+ * Description: Send YouTube Notifications to your Lifx Lights through WordPress.
  * Author:      Stuart Shields
  * Author URI:  https://stuartshields.com
  * Text Domain: lifx-youtube

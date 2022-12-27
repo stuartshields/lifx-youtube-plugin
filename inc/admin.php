@@ -31,7 +31,7 @@ function admin_menu() {
  *
  * @return void
  */
-function register_options_page() : void {
+function register_options_page(): void {
 	if (
 		isset( $_POST['updated'] )
 		&& $_POST['updated'] === 'true'
@@ -88,7 +88,10 @@ function register_options_page() : void {
 								value="<?php echo esc_attr( $settings['channel_id'] ); ?>"
 							/><br />
 							<p class="description">
-								<?php echo __( 'Channel ID', 'lifx-youtube' ); ?>
+								<?php printf(
+									__( 'Get your <a href="%s" target="_blank">Channel ID</a>.', 'lifx-youtube' ),
+									esc_url( 'https://studio.youtube.com/' )
+								) ?>
 							</p>
 						</td>
 					</tr>
@@ -109,7 +112,7 @@ function register_options_page() : void {
  *
  * @return void
  */
-function save_options() : void {
+function save_options(): void {
 	if ( ! has_valid_nonce() ) {
 		custom_display_message( 'error' );
 		return;
@@ -151,7 +154,7 @@ function has_valid_nonce() {
  * @param string $type success|error string
  * @return void
  */
-function custom_display_message( string $type = 'success' ) : void {
+function custom_display_message( string $type = 'success' ): void {
 	$classes = sprintf( 'notice notice-%s is-dismissible', $type );
 	$message = __( 'Lifx YouTube settings updated successfully.', 'lifx-youtube' );
 
