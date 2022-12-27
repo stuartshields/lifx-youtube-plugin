@@ -95,6 +95,26 @@ function register_options_page(): void {
 							</p>
 						</td>
 					</tr>
+					<tr>
+						<th>
+							<label for="scheduled_time">
+								<?php esc_html_e( 'Run job every:', 'lifx-youtube' ); ?>
+							</label>
+						</th>
+						<td>
+							<input
+								id="scheduled_time"
+								type="number"
+								min="5"
+								name="scheduled_time"
+								class="regular-text"
+								value="<?php echo esc_attr( $settings['scheduled_time'] ); ?>"
+							/><br />
+							<p class="description">
+								<?php esc_html_e( 'In Minutes.', 'lifx-youtube' ); ?>
+							</p>
+						</td>
+					</tr>
 				</tbody>
 			</table>
 			<?php wp_nonce_field( NONCE_ACTION, NONCE_NAME ); ?>
@@ -121,9 +141,14 @@ function save_options(): void {
 	$api_key = sanitize_text_field( wp_unslash( $_POST['api_key'] ) );
 	$channel_id = sanitize_text_field( wp_unslash( $_POST['channel_id'] ) );
 
+	$scheduled_time = ! empty( $_POST['scheduled_time'] ) ? absint( $_POST['scheduled_time'] ) : 5;
+
+	as_unschedule_action( 'lifx_youtube_check_for_subscribers' );
+
 	$option_values = [
 		'api_key' => $api_key,
 		'channel_id' => $channel_id,
+		'scheduled_time' => $scheduled_time,
 	];
 
 	update_option( OPTION_KEY, $option_values );
@@ -174,6 +199,7 @@ function get_youtube_option() {
 		[
 			'api_key' => '',
 			'channel_id' => '',
+			'scheduled_time' => 5,
 		]
 	);
 }

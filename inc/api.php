@@ -18,7 +18,7 @@ function bootstrap(): void {
 	}
 
 	add_action( 'init', __NAMESPACE__ . '\\schedule_job' );
-	add_action( 'check_for_subscribers', __NAMESPACE__ . '\\run_job' );
+	add_action( 'check_for_subscribers', __NAMESPACE__ . '\\lifx_youtube_job' );
 }
 
 /**
@@ -27,11 +27,12 @@ function bootstrap(): void {
  * @return void
  */
 function schedule_job(): void {
-	if ( false === as_has_scheduled_action( 'run_job' ) ) {
+	if ( false === as_has_scheduled_action( 'lifx_youtube_job' ) ) {
+		$settings = Admin\get_youtube_option();
 		as_schedule_recurring_action(
 			time(),
-			5 * MINUTE_IN_SECONDS,
-			'check_for_subscribers',
+			$settings['scheduled_time'] * MINUTE_IN_SECONDS,
+			'lifx_youtube_check_for_subscribers',
 			[],
 			'',
 			true
@@ -40,9 +41,9 @@ function schedule_job(): void {
 }
 
 /**
- * A callback to run when the 'run_jog' scheduled action is run.
+ * A callback to run when the 'lifx_youtube_job' scheduled action is run.
  */
-function run_job(): void {
+function lifx_youtube_job(): void {
 
 	$settings = Admin\get_youtube_option();
 	$url = add_query_arg(
