@@ -1,0 +1,23 @@
+{
+    "name": "stuartshields/lifx-youtube-plugin",
+    "description": "Send YouTube Notifications to your Lifx Lights through WordPress.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Stuart Shields",
+            "email": "sbshields@gmail.com",
+            "homepage": "https://github.com/stuartshields",
+            "role": "Software Engineer"
+        }
+    ],
+    "keywords": ["wordpress", "plugin", "lifx", "youtube"],
+    "homepage": "https://github.com/stuartshields/lifx-youtube-plugin",
+    "support": {
+        "issues": "https://github.com/stuartshields/lifx-youtube-plugin/issues",
+        "source": "https://github.com/stuartshields/lifx-youtube-plugin"
+    },
+    "require": {
+        "php": ">=7.4"
+    }
+}
