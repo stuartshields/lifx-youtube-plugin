@@ -18,7 +18,7 @@ function bootstrap(): void {
 	}
 
 	add_action( 'init', __NAMESPACE__ . '\\schedule_job' );
-	add_action( 'check_for_subscribers', __NAMESPACE__ . '\\lifx_youtube_job' );
+	add_action( 'lifx_youtube_check_for_subscribers', __NAMESPACE__ . '\\lifx_youtube_job' );
 }
 
 /**
