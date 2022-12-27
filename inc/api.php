@@ -11,8 +11,8 @@ const API_URL = 'https://www.googleapis.com/youtube/v3';
 function bootstrap(): void {
 	$settings = Admin\get_youtube_option();
 	if (
-		$settings['api_key']
-		&& $settings['channel_id']
+		empty( $settings['api_key'] )
+		&& empty( $settings['channel_id'] )
 	) {
 		return;
 	}
