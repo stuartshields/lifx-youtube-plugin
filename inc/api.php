@@ -3,8 +3,7 @@
 namespace Lifx_Youtube\API;
 
 use Lifx_Youtube\Admin;
-
-use function Lifx\Effects\breathe;
+use Lifx_Youtube\Effects;
 
 const API_URL = 'https://www.googleapis.com/youtube/v3';
 
@@ -58,8 +57,8 @@ function schedule_job(): void {
  * A callback to run when the 'lifx_youtube_job' scheduled action is run.
  */
 function lifx_youtube_job(): void {
-
 	$settings = Admin\get_youtube_option();
+
 	$url = add_query_arg(
 		[
 			'part' => 'statistics',
@@ -100,47 +99,7 @@ function lifx_youtube_job(): void {
 
 	$old_subscriber_count = get_transient( 'youtube_subscriber_count' );
 	if ( $old_subscriber_count ) {
-		$colour = 'rebeccapurple';
-		$from_colour = null;
-		$selector = 'all';
-		$period = 1;
-		$cycles = 1;
-		$persist = false;
-		$power_on = true;
-		$peak = 0.5;
-
-		if ( $old_subscriber_count > $old_subscriber_count ) {
-			$colour = 'cornflowerblue';
-
-		} elseif ( $subscriber_count < $old_subscriber_count ) {
-			$colour = 'firebrick';
-		}
-
-		$lifx_response = breathe(
-			$colour,
-			$from_colour,
-			$selector,
-			$period,
-			$cycles,
-			$persist,
-			$power_on,
-			$peak
-		);
-
-		// The response should be a 207 Multi-Status.
-		if ( 207 !== wp_remote_retrieve_response_code( $lifx_response ) ) {
-			error_log( $lifx_response->get_error_message() );
-
-			return;
-		}
-
-		// The response will be a 207.
-		if ( 207 === wp_remote_retrieve_response_code( $lifx_response ) ) {
-			$payload = json_decode( wp_remote_retrieve_body( $lifx_response), true );
-			foreach ( $payload['results'] as $light ) {
-				error_log( "{$light['label']} has completed the breathe effect." );
-			}
-		}
+		Effects\show_effect( $settings['effect'] );
 	}
 
 	set_transient(
