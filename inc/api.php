@@ -27,8 +27,12 @@ function bootstrap(): void {
  * @return void
  */
 function schedule_job(): void {
-	if ( false === as_has_scheduled_action( 'lifx_youtube_job' ) ) {
-		$settings = Admin\get_youtube_option();
+	$settings = Admin\get_youtube_option();
+	if ( false !== as_has_scheduled_action( 'lifx_youtube_check_for_subscribers' ) ) {
+		return;
+	}
+
+	if ( ! $settings['allow_notifications'] ) {
 		as_schedule_recurring_action(
 			time(),
 			$settings['scheduled_time'] * MINUTE_IN_SECONDS,
@@ -37,7 +41,17 @@ function schedule_job(): void {
 			'',
 			true
 		);
+
+		return;
 	}
+
+	as_schedule_single_action(
+		next_run_time( $settings ),
+		'lifx_youtube_check_for_subscribers',
+		[],
+		'',
+		true
+	);
 }
 
 /**
@@ -133,4 +147,33 @@ function lifx_youtube_job(): void {
 		'youtube_subscriber_count',
 		absint( $subscriber_count )
 	);
+}
+
+/**
+ * Next run time.
+ *
+ * @param array $settings Settings.
+ *
+ * @return string Next run time in seconds.
+ */
+function next_run_time( array $settings ): string {
+	// Schedule job for today if time hasn't happened yet.
+	if ( strtotime( 'today ' . $settings['allow_notification_from'] ) >= current_time( 'U' ) )
+	{
+		return time() + abs( strtotime( 'today ' . $settings['allow_notification_from'] ) - current_time( 'U' ) );
+	} elseif (
+		// Schedule the job to run tomorrow if outside our scheduled window.
+		strtotime( 'today ' . $settings['allow_notification_from'] ) <= current_time( 'U' )
+		&& current_time( 'U' ) >= strtotime( 'today ' . $settings['allow_notification_to'] )
+	) {
+		return time() + abs( strtotime( 'tomorrow ' . $settings['allow_notification_from'] ) - current_time( 'U' ) );
+	} elseif (
+		// Schedule last job before the scheduled window runs out.
+		abs(
+			strtotime( 'today ' . $settings['allow_notification_to'] ) - current_time( 'U' )
+		) / 60 <= $settings['scheduled_time'] ) {
+			return time() + abs( strtotime( 'today ' . $settings['allow_notification_to'] ) - current_time( 'U' ) );
+	}
+
+	return time() + $settings['scheduled_time'] * MINUTE_IN_SECONDS;
 }
