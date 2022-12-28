@@ -4,6 +4,7 @@ namespace Lifx_Youtube\Admin;
 
 use Lifx_Youtube\Effects;
 use const Lifx_Youtube\OPTION_KEY as OPTION_KEY;
+use const Lifx_Youtube\TRANSIENT as TRANSIENT;
 
 const NONCE_NAME = 'lifx-youtube-settings-nonce';
 const NONCE_ACTION = 'lifx-youtube-settings-save';
@@ -81,6 +82,12 @@ function register_options_page(): void {
 							</label>
 						</th>
 						<td>
+							<input
+								type="hidden"
+								name="old_channel_id"
+								class="regular-text"
+								value="<?php echo esc_attr( $settings['channel_id'] ); ?>"
+							/>
 							<input
 								id="channel_id"
 								type="text"
@@ -226,6 +233,11 @@ function save_options(): void {
 
 	$api_key = sanitize_text_field( wp_unslash( $_POST['api_key'] ) );
 	$channel_id = sanitize_text_field( wp_unslash( $_POST['channel_id'] ) );
+
+	// Check to see if Channel ID has been updated.
+	if ( $_POST['channel_id'] !== $_POST['channel_id'] ) {
+		delete_transient( TRANSIENT );
+	}
 
 	$scheduled_time = ! empty( $_POST['scheduled_time'] ) ? absint( $_POST['scheduled_time'] ) : 5;
 

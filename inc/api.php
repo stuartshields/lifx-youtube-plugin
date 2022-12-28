@@ -5,6 +5,8 @@ namespace Lifx_Youtube\API;
 use Lifx_Youtube\Admin;
 use Lifx_Youtube\Effects;
 
+use const Lifx_Youtube\TRANSIENT as TRANSIENT;
+
 const API_URL = 'https://www.googleapis.com/youtube/v3';
 
 function bootstrap(): void {
@@ -97,7 +99,7 @@ function lifx_youtube_job(): void {
 
 	$subscriber_count = $resonse_body_decoded->items[0]->statistics->subscriberCount;
 
-	$old_subscriber_count = get_transient( 'youtube_subscriber_count' );
+	$old_subscriber_count = get_transient( TRANSIENT );
 	if ( $old_subscriber_count ) {
 		$colour = 'rebeccapurple';
 		if ( $old_subscriber_count > $old_subscriber_count ) {
@@ -110,7 +112,7 @@ function lifx_youtube_job(): void {
 	}
 
 	set_transient(
-		'youtube_subscriber_count',
+		TRANSIENT,
 		absint( $subscriber_count )
 	);
 }

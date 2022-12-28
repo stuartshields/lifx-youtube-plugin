@@ -21,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 const OPTION_KEY = 'lifx-youtube-settings';
+const TRANSIENT = 'youtube_subscriber_count';
 
 require_once __DIR__ . '/inc/admin.php';
 require_once __DIR__ . '/inc/api.php';
