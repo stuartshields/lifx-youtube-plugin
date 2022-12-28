@@ -235,7 +235,7 @@ function save_options(): void {
 	$channel_id = sanitize_text_field( wp_unslash( $_POST['channel_id'] ) );
 
 	// Check to see if Channel ID has been updated.
-	if ( $_POST['channel_id'] !== $_POST['channel_id'] ) {
+	if ( $_POST['channel_id'] !== $_POST['old_channel_id'] ) {
 		delete_transient( TRANSIENT );
 	}
 
