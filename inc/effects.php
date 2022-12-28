@@ -24,7 +24,6 @@ function allowed_effects(): array {
 }
 
 function show_effect( string $effect_name ): void {
-	error_log( print_r($effect_name, true));
 	switch( strtolower( $effect_name ) ) {
 		case 'breath':
 			breathe();
