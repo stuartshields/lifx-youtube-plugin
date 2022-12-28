@@ -2,6 +2,7 @@
 
 namespace Lifx_Youtube\Admin;
 
+use Lifx_Youtube\Effects;
 use const Lifx_Youtube\OPTION_KEY as OPTION_KEY;
 
 const NONCE_NAME = 'lifx-youtube-settings-nonce';
@@ -168,6 +169,38 @@ function register_options_page(): void {
 							</p>
 						</td>
 					</tr>
+					<tr>
+						<th>
+							<label for="effect">
+								<?php esc_html_e( 'Effect to run:', 'lifx-youtube' ); ?>
+							</label>
+						</th>
+						<td>
+							<select name="effect" id="effect">
+								<?php foreach ( Effects\allowed_effects() as $effect ) : ?>
+									<option
+										value="<?php echo esc_attr( $effect ); ?>"
+										<?php
+										selected(
+											$effect,
+											$settings['effect']
+										);
+										?>
+									>
+										<?php echo esc_html( $effect ); ?>
+									</option>
+								<?php endforeach; ?>
+							</select>
+							<br />
+							<p class="description">
+								<?php
+								esc_html_e(
+									'Notification effect.', 'lifx-youtube'
+								);
+								?>
+							</p>
+						</td>
+					</tr>
 				</tbody>
 			</table>
 			<?php wp_nonce_field( NONCE_ACTION, NONCE_NAME ); ?>
@@ -198,6 +231,8 @@ function save_options(): void {
 
 	$allow_notifications = ! empty( $_POST['allow_notifications'] ) ? absint( $_POST['allow_notifications'] ) : 0;
 
+	$effect = ! empty( $_POST['effect'] ) ? sanitize_text_field( wp_unslash( $_POST['effect'] ) ) : '';
+
 	if ( $allow_notifications ) {
 		$allow_notification_from = ! empty( $_POST['allow_notification_from'] ) ? sanitize_text_field( wp_unslash( $_POST['allow_notification_from'] ) ) : '';
 		$allow_notification_to = ! empty( $_POST['allow_notification_to'] ) ? sanitize_text_field( wp_unslash( $_POST['allow_notification_to'] ) ) : '';
@@ -210,6 +245,7 @@ function save_options(): void {
 		'api_key' => $api_key,
 		'channel_id' => $channel_id,
 		'scheduled_time' => $scheduled_time,
+		'effect' => $effect,
 		'allow_notifications' => $allow_notifications,
 		'allow_notification_from' => $allow_notification_from,
 		'allow_notification_to' => $allow_notification_to,
@@ -269,6 +305,7 @@ function get_youtube_option(): array {
 			'api_key' => '',
 			'channel_id' => '',
 			'scheduled_time' => 5,
+			'effect' => 'breathe',
 			'allow_notifications' => 0, // Default is false.
 			'allow_notification_from' => '',
 			'allow_notification_to' => '',

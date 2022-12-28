@@ -24,6 +24,8 @@ const OPTION_KEY = 'lifx-youtube-settings';
 
 require_once __DIR__ . '/inc/admin.php';
 require_once __DIR__ . '/inc/api.php';
+require_once __DIR__ . '/inc/effects.php';
 
 Admin\bootstrap();
 API\bootstrap();
+Effects\bootstrap();
