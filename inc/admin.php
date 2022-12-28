@@ -135,7 +135,7 @@ function register_options_page(): void {
 										<?php
 										selected(
 											$increment,
-											$settings['allow_notifications_from']
+											$settings['allow_notification_from']
 										);
 										?>
 									>
