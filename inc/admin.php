@@ -197,9 +197,13 @@ function save_options(): void {
 	$scheduled_time = ! empty( $_POST['scheduled_time'] ) ? absint( $_POST['scheduled_time'] ) : 5;
 
 	$allow_notifications = ! empty( $_POST['allow_notifications'] ) ? absint( $_POST['allow_notifications'] ) : 0;
-	$allow_notification_from = ! empty( $_POST['allow_notification_from'] ) ? sanitize_text_field( wp_unslash( $_POST['allow_notification_from'] ) ) : '';
-	$allow_notification_to = ! empty( $_POST['allow_notification_to'] ) ? sanitize_text_field( wp_unslash( $_POST['allow_notification_to'] ) ) : '';
 
+	if ( $allow_notifications ) {
+		$allow_notification_from = ! empty( $_POST['allow_notification_from'] ) ? sanitize_text_field( wp_unslash( $_POST['allow_notification_from'] ) ) : '';
+		$allow_notification_to = ! empty( $_POST['allow_notification_to'] ) ? sanitize_text_field( wp_unslash( $_POST['allow_notification_to'] ) ) : '';
+	}
+
+	// Unregister any scheduled actions.
 	as_unschedule_action( 'lifx_youtube_check_for_subscribers' );
 
 	$option_values = [
