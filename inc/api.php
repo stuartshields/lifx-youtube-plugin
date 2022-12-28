@@ -99,7 +99,14 @@ function lifx_youtube_job(): void {
 
 	$old_subscriber_count = get_transient( 'youtube_subscriber_count' );
 	if ( $old_subscriber_count ) {
-		Effects\show_effect( $settings['effect'] );
+		$colour = 'rebeccapurple';
+		if ( $old_subscriber_count > $old_subscriber_count ) {
+			$colour = 'cornflowerblue';
+		} elseif ( $subscriber_count < $old_subscriber_count ) {
+			$colour = 'firebrick';
+		}
+
+		Effects\show_effect( $settings['effect'], $colour );
 	}
 
 	set_transient(
