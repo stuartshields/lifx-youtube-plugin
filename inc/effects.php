@@ -18,14 +18,14 @@ function bootstrap(): void {
  */
 function allowed_effects(): array {
 	return [
-		'breathe' => 'Breath',
+		'breathe' => 'Breathe',
 		'pulse' => 'Pulse',
 	];
 }
 
 function show_effect( string $effect_name ): void {
 	switch( strtolower( $effect_name ) ) {
-		case 'breath':
+		case 'breathe':
 			breathe();
 			break;
 		case 'pulse':
